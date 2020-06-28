@@ -49,7 +49,7 @@ MongoClient.connect(url, async function (err, db) {
 
   const searchAggragatePromisified = () => {
     return new Promise((resolve, reject)=>{
-      dbo.collection("ScrapedTweets").aggregate(query).toArray(function (err, result) {
+      dbo.collection("ScrapedTweets").aggregate(query, { allowDiskUse: true }).toArray(function (err, result) {
         if (err) reject(err)
         return resolve(result);
       })
