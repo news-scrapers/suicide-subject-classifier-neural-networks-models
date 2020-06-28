@@ -28,6 +28,10 @@ share/python-wheels/
 MANIFEST
 no_suicide_tweets.json 
 suicide_tweets.json
+large-bundle-clean.json
+
+node_modules
+node_modules/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
