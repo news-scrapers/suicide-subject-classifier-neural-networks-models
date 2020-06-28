@@ -29,6 +29,7 @@ MANIFEST
 no_suicide_tweets.json 
 suicide_tweets.json
 large-bundle-clean.json
+temp-model.h5
 
 node_modules
 node_modules/
