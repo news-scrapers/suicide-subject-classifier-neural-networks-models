@@ -7,6 +7,7 @@ from keras.optimizers import Adam
 from cleaner import Cleaner
 
 maxlen = 250
+
 def main():
     # loading
     with open('../data/neural_network_config/tokenizer.pickle', 'rb') as handle:

@@ -37,7 +37,7 @@ class Cleaner:
 
 
     def clean_news(self, df):
-        print("cleaning the text data")
+        print("cleaning the text data 9")
         df['text'] = df['text'].apply(self.clean_text)
         df['text'] = df['text'].str.replace('\d+', '')
         return df
@@ -58,11 +58,18 @@ class Cleaner:
         
         
         df1 = pd.read_json(filename1)
+        print(df1.shape)
+        df1 = df1[~df1.text.str.contains("suicid")]
+        print(df1.shape)
+
         df2 = pd.read_json(filename2)
 
-        
+        df = df1.append(df2)
+        print(df.shape)
+        df = df[df['text'].apply(lambda x: len(x) >50)]
+        print(df.shape)
 
-        self.df = df1.append(df2)
+        self.df = df
 
         self.df = self.clean_news(self.df)
         print(self.df)
