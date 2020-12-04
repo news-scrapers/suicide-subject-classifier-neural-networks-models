@@ -6,7 +6,8 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Embedding, MaxPooling1D, Flatten, GlobalMaxPool1D, Dropout, Conv1D
-from keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+from keras.callbacks import CSVLogger, ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+import keras_metrics
 
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.sequence import pad_sequences
@@ -61,8 +62,8 @@ class SuicideClassifier:
         #self.model.add(Dense(1, activation='sigmoid'))
         
         self.model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
+        loss='binary_crossentropy',
+        metrics=['accuracy',keras_metrics.precision(), keras_metrics.recall()])
               
     def save_model(self, model):
         print("saving model")
@@ -89,12 +90,14 @@ class SuicideClassifier:
         self.create_model(vocab_size)
         
         print("training model")
-        callbacks = [
+        csv_logger = CSVLogger('log_loss.csv', append=False, separator=';')
+
+        callbacks = [csv_logger,
         ModelCheckpoint(filepath='../data/neural_network_config/temp-model.h5', save_best_only=True)]
 
         history = self.model.fit(X_train, y_train,
-                            epochs=10,
-                            batch_size=100,
+                            epochs=5,
+                            batch_size=50,
                             validation_data=(X_test, y_test),
                             callbacks=callbacks)
 
