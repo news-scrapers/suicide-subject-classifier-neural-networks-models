@@ -17,14 +17,14 @@ import pickle
 
 
 
-class DomesticViolenceNewsClassifier:
+class SuicideClassifier:
     def __init__(self):
         print("loading toikenizer")
         with open('../data/neural_network_config/tokenizer.pickle', 'rb') as handle:
             self.tokenizer = pickle.load(handle)
         self.multilabel_binarizer = MultiLabelBinarizer()
         self.model = None
-        self.maxlen = 250
+        self.maxlen = 500
 
     def create_train_and_test_data(self, sentences, y):
         print("separating data into test data and train data")
@@ -42,11 +42,6 @@ class DomesticViolenceNewsClassifier:
         print("creating model")
         filter_length = 300
 
-        #model = Sequential()
-        #model.add(Embedding(vocab_size, 20, input_length=maxlen))
-        #model.add(Dropout(0.15))
-        #model.add(GlobalMaxPool1D())
-        #model.add(Dense(output_size, activation='sigmoid'))
 
         self.model = Sequential()
         self.model.add(Embedding(vocab_size, 20, input_length=self.maxlen))
@@ -80,12 +75,12 @@ class DomesticViolenceNewsClassifier:
         print("Saved model to disk")
 
     def create_and_train_model(self):
-        filename = "../data/json_bundle_reviews/large-bundle-clean.json"
+        filename = "../data/extracted_tweets/large-bundle-clean.json"
         df = pd.read_json(filename)
         #df = self.clean_news(df)
 
-        y = df.sentiment.values
-        sentences = df['content'].values
+        y = df.about_suicide.values
+        sentences = df['text'].values
 
         X_train, X_test, y_train, y_test = self.create_train_and_test_data(sentences, y)
 
@@ -114,5 +109,5 @@ class DomesticViolenceNewsClassifier:
 
 
 if __name__== "__main__":
-    classifier = DomesticViolenceNewsClassifier()
+    classifier = SuicideClassifier()
     classifier.create_and_train_model()
